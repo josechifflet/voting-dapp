@@ -32,6 +32,7 @@ export class VotingContractService {
   }
 
   private async deployContract(): Promise<any> {
+    // generate contract instance connection
     const transferContract = contract(TOKEN_ABI);
     transferContract.setProvider(this.web3);
     const instance = await transferContract.deployed();
@@ -91,5 +92,10 @@ export class VotingContractService {
   public async hasAlreadyVoted(account: string): Promise<boolean> {
     await this.deployContract();
     return this.instance.voters(account);
+  }
+
+  public async vote(candidateId: number, account: string): Promise<any> {
+    await this.deployContract();
+    return this.instance.vote(candidateId, { from: account });
   }
 }

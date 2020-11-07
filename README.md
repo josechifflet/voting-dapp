@@ -1,6 +1,16 @@
-# VotingDapp
+# Angular Voting DApp on Truffle Framework.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.2.0.
+## Deployment
+
+- npm install -g truffle
+- npm install
+- truffle compile
+- truffle migrate --reset
+- cd /web
+- npm install
+- ng serve
+
+# Web side of this project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.2.0.
 
 ## Development server
 
