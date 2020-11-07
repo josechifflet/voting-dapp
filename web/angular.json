@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "voting-dapp"
+    }
+  },
+  "defaultProject": "voting-dapp",
+  "cli": {
+    "analytics": false
+  }
 }
