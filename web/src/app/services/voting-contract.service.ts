@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
-import { Observable } from 'rxjs/internal/Observable';
 import Web3 from 'web3';
+import { Candidate } from '../core/dtos';
 const contract = require('@truffle/contract');
 
 declare let require: any;
@@ -47,7 +46,7 @@ export class VotingContractService {
     return Promise.resolve(enable);
   }
 
-  private async getAccount(): Promise<string> {
+  public async getAccount(): Promise<string> {
     if (this.account == null) {
       this.account = await new Promise((resolve, reject) => {
         window.web3.eth.getAccounts((err, retAccount) => {
@@ -81,21 +80,39 @@ export class VotingContractService {
     });
   }
 
-  public async getCandidates(): Promise<any> {
+  public async getCandidates(): Promise<Candidate[]> {
     await this.deployContract();
     const candidatesCount = await this.instance.candidatesCount();
-    const candidatesArray = new Array<number>(candidatesCount);
-    const candidates = candidatesArray.map((i) => this.instance.candidates(i));
-    return Promise.all(candidates);
+    const candidates = [];
+    for (let i = 1; i <= candidatesCount; i++) {
+      candidates.push(this.instance.candidates(i));
+    }
+    const candidatesFromContract = await Promise.all(candidates);
+    return candidatesFromContract.map((candidate) => ({
+      id: candidate[0].words[0],
+      name: candidate[1],
+      voteCount: candidate[2],
+    }));
   }
 
-  public async hasAlreadyVoted(account: string): Promise<boolean> {
+  public async hasAlreadyVoted(): Promise<boolean> {
     await this.deployContract();
-    return this.instance.voters(account);
+    const votantAccount = await this.getAccount();
+    return this.instance.voters(votantAccount);
   }
 
-  public async vote(candidateId: number, account: string): Promise<any> {
+  public async vote(candidateId: number): Promise<any> {
     await this.deployContract();
-    return this.instance.vote(candidateId, { from: account });
+    const votantAccount = await this.getAccount();
+    return this.instance.vote(candidateId, { from: votantAccount });
+  }
+
+  public async listenEvents(): Promise<any> {
+    await this.deployContract();
+    return this.instance
+      .votedEvent({}, { fromBlock: 0, toBlock: 'latest' })
+      .watch((error, event) => {
+        console.log('event triggered', event);
+      });
   }
 }

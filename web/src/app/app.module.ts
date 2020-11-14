@@ -3,9 +3,10 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { VotingContractService } from './services/voting-contract.service';
+import { ElectionComponent } from './election/election.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, ElectionComponent],
   imports: [BrowserModule, AppRoutingModule],
   providers: [VotingContractService],
   bootstrap: [AppComponent],

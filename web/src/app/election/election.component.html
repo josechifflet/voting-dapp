@@ -1,0 +1,6 @@
+<div *ngFor="let candidate of candidates">
+  <li *ngIf="candidate">
+    {{ candidate.name }} votos {{ candidate.voteCount }}
+  </li>
+  <button (click)="vote(candidate)">Vote</button>
+</div>
