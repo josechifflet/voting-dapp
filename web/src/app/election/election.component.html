@@ -1,6 +1,24 @@
-<div *ngFor="let candidate of candidates">
-  <li *ngIf="candidate">
-    {{ candidate.name }} votos {{ candidate.voteCount }}
-  </li>
-  <button (click)="vote(candidate)">Vote</button>
+<div
+  class="container"
+  id="voting-box"
+  *ngIf="republicanCandidate && democratCandidate"
+>
+  <div class="left" (click)="vote(democratCandidate.id)">
+    <div class="text">
+      <span class="option-size" id="size-one">Joe Biden</span>
+      <br />
+      <span class="option-title" id="option-one">{{
+        democratCandidate.voteCount
+      }}</span>
+    </div>
+  </div>
+  <div class="right" (click)="vote(republicanCandidate.id)">
+    <div class="text">
+      <span class="option-size" id="size-two">Donald Trump</span>
+      <br />
+      <span class="option-title" id="option-two">{{
+        republicanCandidate.voteCount
+      }}</span>
+    </div>
+  </div>
 </div>

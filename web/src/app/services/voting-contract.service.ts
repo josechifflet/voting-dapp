@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import Web3 from 'web3';
 import { Candidate } from '../core/dtos';
-const contract = require('@truffle/contract');
+const TruffleContract = require('@truffle/contract');
 
 declare let require: any;
 declare let window: any;
@@ -15,6 +15,8 @@ export class VotingContractService {
   private enable: any;
   private readonly web3: any;
   private instance: any;
+
+  votedEventEmitter: EventEmitter<any> = new EventEmitter();
 
   constructor() {
     if (window.ethereum === undefined) {
@@ -32,7 +34,7 @@ export class VotingContractService {
 
   private async deployContract(): Promise<any> {
     // generate contract instance connection
-    const transferContract = contract(TOKEN_ABI);
+    const transferContract = TruffleContract(TOKEN_ABI);
     transferContract.setProvider(this.web3);
     const instance = await transferContract.deployed();
     this.instance = instance;
@@ -46,11 +48,15 @@ export class VotingContractService {
     return Promise.resolve(enable);
   }
 
+  public getVotedEventEmitter(): EventEmitter<any> {
+    return this.votedEventEmitter;
+  }
+
   public async getAccount(): Promise<string> {
     if (this.account == null) {
       this.account = await new Promise((resolve, reject) => {
         window.web3.eth.getAccounts((err, retAccount) => {
-          if (retAccount.length > 0) {
+          if (retAccount?.length > 0) {
             this.account = retAccount[0];
             resolve(this.account);
           } else {
@@ -88,11 +94,13 @@ export class VotingContractService {
       candidates.push(this.instance.candidates(i));
     }
     const candidatesFromContract = await Promise.all(candidates);
-    return candidatesFromContract.map((candidate) => ({
-      id: candidate[0].words[0],
-      name: candidate[1],
-      voteCount: candidate[2],
-    }));
+    return candidatesFromContract
+      .map((candidate) => ({
+        id: candidate[0].words[0],
+        name: candidate[1],
+        voteCount: candidate[2].words[0],
+      }))
+      .sort((a, b) => b.id - a.id);
   }
 
   public async hasAlreadyVoted(): Promise<boolean> {
@@ -110,9 +118,9 @@ export class VotingContractService {
   public async listenEvents(): Promise<any> {
     await this.deployContract();
     return this.instance
-      .votedEvent({}, { fromBlock: 0, toBlock: 'latest' })
-      .watch((error, event) => {
-        console.log('event triggered', event);
-      });
+      .votedEvent({ toBlock: 'latest', fromBlock: 0 }, (error, event) => {
+        this.votedEventEmitter.emit(event);
+      })
+      .on('error', console.error);
   }
 }

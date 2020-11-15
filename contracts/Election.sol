@@ -1,4 +1,4 @@
-pragma solidity 0.4.20;
+pragma solidity ^0.5.0;
 
 contract Election {
     // Model a Candidate
@@ -27,14 +27,14 @@ contract Election {
     //Admins register
     mapping(address => bool) private adminsRegister; //Los que pueden llamar a registerVoters
 
-    function Election () public {
+    constructor () public {
         addCandidate("Donald Trump");
         addCandidate("Joe Biden");
         // adminsRegister[0x3d9671839c2db7091Aa58178f05aD258bF339E86] = true;
-        // votersRegister[address(0x995657Efe3E1cd5aDEd982E50CEA9C608CEfF9C9)] = true;
+        votersRegister[address(0xfB3d3D042259F518f028ed616Ee14a97ac18B8B4)] = true;
     }
 
-    function addCandidate (string _name) private {
+    function addCandidate (string memory _name) private {
         candidatesCount ++;
         candidates[candidatesCount] = Candidate(candidatesCount, _name, 0);
     }
@@ -61,6 +61,6 @@ contract Election {
         candidates[_candidateId].voteCount ++;
 
         // trigger voted event
-        votedEvent(_candidateId);
+        emit votedEvent(_candidateId);
     }
 }
