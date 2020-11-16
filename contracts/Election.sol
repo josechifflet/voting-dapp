@@ -33,8 +33,11 @@ contract Election {
         addCandidate("Donald Trump");
         addCandidate("Joe Biden");
 
-        // adminsRegister[0x3d9671839c2db7091Aa58178f05aD258bF339E86] = true;
-        // votersRegister[address(0x71a9232072B66f69429449F84fa2F00dECFF6e15)] = true;
+        adminsRegister[address(0x96D83Dfd656729E7bcaF0D85152e503057E0FAFB)] = true;
+        
+        votersRegister[address(0x35f093768d48E0AF86733CD9639fC070B8BcD901)] = true;
+        votersRegister[address(0xE3A169e94e4AC9706e2e4Ff75142241eD5D69378)] = true;
+        votersRegister[address(0xfcAa1107664f05faEB9CFeb35893Bc75b035983A)] = true;
     }
 
     function addCandidate (string memory _name) private {

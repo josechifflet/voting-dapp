@@ -1,12 +1,4 @@
-import { ThrowStmt } from '@angular/compiler';
-import {
-  Component,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  SimpleChanges,
-} from '@angular/core';
-import { error } from 'protractor';
+import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 import { Candidate } from '../core/dtos';
@@ -18,29 +10,34 @@ import { VotingContractService } from '../services/voting-contract.service';
   styleUrls: ['./election.component.css'],
 })
 export class ElectionComponent implements OnInit, OnDestroy {
-  republicanCandidate: Candidate;
-  democratCandidate: Candidate;
+  public republicanCandidate: Candidate;
+  public democratCandidate: Candidate;
 
   hasVoted: boolean;
   voteAllowed: boolean;
   votedEventSubscription: Subscription;
 
-  constructor(private votingContractService: VotingContractService) {}
+  constructor(
+    private votingContractService: VotingContractService,
+    private ngZone: NgZone
+  ) {}
 
   ngOnDestroy(): void {
     this.votedEventSubscription.unsubscribe();
   }
 
   ngOnInit(): void {
-    this.getCandidates();
     this.votedEventSubscription = this.votingContractService
       .getVotedEventEmitter()
       .subscribe((event) => {
-        this.onVotedEvent(event);
+        this.ngZone.run(() => {
+          this.onVotedEvent(event);
+        });
       });
+    this.getCandidates();
   }
 
-  onVotedEvent(event): void {
+  public onVotedEvent(event): void {
     try {
       this.getCandidates();
     } catch (error) {
@@ -57,7 +54,6 @@ export class ElectionComponent implements OnInit, OnDestroy {
       const candidates = await this.votingContractService.getCandidates();
       this.republicanCandidate = candidates.find((c) => c.id === 1);
       this.democratCandidate = candidates.find((c) => c.id === 2);
-      console.log(candidates);
     } catch (error) {
       Swal.fire({
         icon: 'error',
