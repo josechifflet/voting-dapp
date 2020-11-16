@@ -1,4 +1,5 @@
 import { EventEmitter, Injectable } from '@angular/core';
+import Swal from 'sweetalert2';
 import Web3 from 'web3';
 import { Candidate } from '../core/dtos';
 const TruffleContract = require('@truffle/contract');
@@ -16,19 +17,37 @@ export class VotingContractService {
   private readonly web3: any;
   private instance: any;
 
-  votedEventEmitter: EventEmitter<any> = new EventEmitter();
+  public votedEventEmitter: EventEmitter<any> = new EventEmitter();
 
   constructor() {
     if (window.ethereum === undefined) {
-      alert('Non-Ethereum browser detected. Install MetaMask');
+      Swal.fire({
+        icon: 'error',
+        title: 'Something went wrong!',
+        text: 'Non-Ethereum browser detected. Install MetaMask',
+      });
     } else {
-      if (typeof window.web3 !== 'undefined') {
-        this.web3 = window.web3.currentProvider;
-      } else {
-        this.web3 = new Web3.providers.HttpProvider('http://localhost:8545');
+      try {
+        if (typeof window.web3 !== 'undefined') {
+          this.web3 = window.web3.currentProvider;
+        } else {
+          this.web3 = new Web3.providers.HttpProvider('http://localhost:8545');
+        }
+        window.web3 = new Web3(window.ethereum);
+        this.enable = this.enableMetaMaskAccount().catch((err) => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Something went wrong!',
+            text: 'A vote has already been registered by this address.',
+          });
+        });
+      } catch (error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Something went wrong!',
+          text: 'A vote has already been registered by this address.',
+        });
       }
-      window.web3 = new Web3(window.ethereum);
-      this.enable = this.enableMetaMaskAccount();
     }
   }
 
@@ -49,11 +68,12 @@ export class VotingContractService {
   }
 
   public getVotedEventEmitter(): EventEmitter<any> {
+    this.openEventsListener();
     return this.votedEventEmitter;
   }
 
   public async getAccount(): Promise<string> {
-    if (this.account == null) {
+    if (this.account === null) {
       this.account = await new Promise((resolve, reject) => {
         window.web3.eth.getAccounts((err, retAccount) => {
           if (retAccount?.length > 0) {
@@ -103,6 +123,12 @@ export class VotingContractService {
       .sort((a, b) => b.id - a.id);
   }
 
+  public async isAllowedToVote(): Promise<boolean> {
+    await this.deployContract();
+    const votantAccount = await this.getAccount();
+    return this.instance.votersRegister(votantAccount);
+  }
+
   public async hasAlreadyVoted(): Promise<boolean> {
     await this.deployContract();
     const votantAccount = await this.getAccount();
@@ -115,12 +141,13 @@ export class VotingContractService {
     return this.instance.vote(candidateId, { from: votantAccount });
   }
 
-  public async listenEvents(): Promise<any> {
+  private async openEventsListener(): Promise<any> {
     await this.deployContract();
-    return this.instance
-      .votedEvent({ toBlock: 'latest', fromBlock: 0 }, (error, event) => {
+    return this.instance?.votedEvent(
+      { toBlock: 'latest', fromBlock: 0 },
+      (error, event) => {
         this.votedEventEmitter.emit(event);
-      })
-      .on('error', console.error);
+      }
+    );
   }
 }

@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity >=0.4.25 <0.7.0;
 
 contract Election {
     // Model a Candidate
@@ -10,28 +10,31 @@ contract Election {
 
     // Store accounts that have voted
     mapping(address => bool) public voters;
+
     // Store Candidates
     // Fetch Candidate
     mapping(uint => Candidate) public candidates;
+
     // Store Candidates Count
     uint public candidatesCount;
 
-    // voted event
+    // Voted event
     event votedEvent (
         uint indexed _candidateId
     );
 
-    //Voters register
+    // Voters map
     mapping(address => bool) public votersRegister;
 
-    //Admins register
-    mapping(address => bool) private adminsRegister; //Los que pueden llamar a registerVoters
+    // Admins map
+    mapping(address => bool) private adminsRegister;
 
     constructor () public {
         addCandidate("Donald Trump");
         addCandidate("Joe Biden");
+
         // adminsRegister[0x3d9671839c2db7091Aa58178f05aD258bF339E86] = true;
-        votersRegister[address(0xfB3d3D042259F518f028ed616Ee14a97ac18B8B4)] = true;
+        // votersRegister[address(0x71a9232072B66f69429449F84fa2F00dECFF6e15)] = true;
     }
 
     function addCandidate (string memory _name) private {
@@ -40,7 +43,7 @@ contract Election {
     }
 
     function registerVoters (address _address) public {
-        // require(adminsRegister[msg.sender]);
+        require(adminsRegister[msg.sender]);
         votersRegister[_address] = true;
     }
 
@@ -62,5 +65,13 @@ contract Election {
 
         // trigger voted event
         emit votedEvent(_candidateId);
+    }
+
+    function isAllowedToVote(address id) public returns(bool) {
+        if(!votersRegister[msg.sender]) { 
+            return false;
+        } else {
+            return true; 
+        }
     }
 }

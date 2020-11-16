@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { VotingContractService } from './services/voting-contract.service';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
