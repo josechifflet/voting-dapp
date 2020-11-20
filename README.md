@@ -52,7 +52,7 @@ Descargar e instalar Ganache. Luego de instalado, ejecutarlo y seleccionar la op
 
   ![](./README_PICS/readme_6.png)
 
-## 8. Si su address es uno habilitado para votar, podrá hacerlo, de lo contrario será rechazado.
+## 8. Si su address es uno habilitado para votar y no se usó para votar todavía, podrá hacerlo, de lo contrario será rechazado.
 
   ![Voto habilitado](./README_PICS/readme_9.png)
 
