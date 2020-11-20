@@ -38,7 +38,7 @@ Descargar e instalar Ganache. Luego de instalado, ejecutarlo y seleccionar la op
   - cd web
   - ng serve
 
-## 5. Dirigirse a http://localhost:4200 y en metamask, iniciar sesión en localhost:8545
+## 5. Dirigirse a http://localhost:4200 y en metamask, iniciar sesión en localhost:8545 (se asume que Ganache se levantó en el puerto 8545)
 
   ![Iniciar sesión en metamask](./README_PICS/readme_3.png)
 
