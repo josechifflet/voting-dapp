@@ -79,7 +79,7 @@ export class ElectionComponent implements OnInit, OnDestroy {
       if (this.hasVoted) {
         Swal.fire({
           icon: 'error',
-          title: 'Something went wrong!',
+          title: 'Already voted!',
           text: 'A vote has already been registered by this address.',
         });
         return;

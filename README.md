@@ -1,37 +1,57 @@
 # Angular Voting DApp on Truffle Framework.
 
-## Deployment
+## Setup
+
+- install metamask in browser
 
 - npm install -g truffle
+- npm install -g @angular/cli
 - npm install
 - truffle compile
 - truffle migrate --reset
-- cd /web
+
+- cd web
 - npm install
 - ng serve
 
-# Web side of this project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.2.0.
+## Deployment
 
-## Development server
+1. Ganache:
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+![Levantar Ganache](./README_PICS/ganache_readme_1.png)
 
-## Code scaffolding
+2. Tomar de Ganache un address e ingresarlo en el constructor del contrato Election.sol, ubicado en /contracts:
+  adminsRegister[address(** address **)] = true;
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+  ![Ingresar address a votantes permitidos](./README_PICS/contract_readme_2.png)
 
-## Build
+3. Ejecutar los comandos:
+  - truffle compile
+  - truffle migrate --reset
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+4. Moverse a la carpeta /web, y levantar localmente la web app
+  - cd web
+  - ng serve
 
-## Running unit tests
+5. Dirigirse a http://localhost:4200 y en metamask, iniciar sesión en localhost:8545
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+  ![Iniciar sesión en metamask](./README_PICS/readme_3.png)
 
-## Running end-to-end tests
+6. Importar una cuenta a metamask
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+  ![Importar cuenta a traves de private key obtenido de ganache](./README_PICS/readme_4.png)
 
-## Further help
+  ![](./README_PICS/readme_5.png)
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+7. Refrescar y conectar la acuenta ingresada. Refrescar nuevamente.
+
+  ![](./README_PICS/readme_6.png)
+
+7. Si su address es uno habilitado para votar, podrá hacerlo, de lo contrario será rechazado.
+
+  ![Voto habilitado](./README_PICS/readme_9.png)
+
+  ![Voto NO habilitado](./README_PICS/readme_7.png)
+
+
+

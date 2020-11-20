@@ -30,12 +30,12 @@ contract Election {
     mapping(address => bool) private adminsRegister;
 
     constructor () public {
-        addCandidate("Donald Trump");
-        addCandidate("Joe Biden");
+        addCandidate("Donald Trump"); // 1
+        addCandidate("Joe Biden"); // 2
 
         adminsRegister[address(0x96D83Dfd656729E7bcaF0D85152e503057E0FAFB)] = true;
         
-        votersRegister[address(0x35f093768d48E0AF86733CD9639fC070B8BcD901)] = true;
+        votersRegister[address(0x4513d84388ec07C12124FEBD4C634f46CD872844)] = true;
         votersRegister[address(0xE3A169e94e4AC9706e2e4Ff75142241eD5D69378)] = true;
         votersRegister[address(0xfcAa1107664f05faEB9CFeb35893Bc75b035983A)] = true;
     }
