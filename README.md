@@ -2,7 +2,10 @@
 
 ## Setup
 
-- install metamask in browser
+- Instalar metamask en el navegador (Chrome, Firefox, Brave o Edge)
+- Instalar el "packet manager" de Node (NPM).
+
+Luego, parado en el directorio "root" de este proyecto ejecutar los siguientes comandos en la consola:
 
 - npm install -g truffle
 - npm install -g @angular/cli
