@@ -21,6 +21,8 @@ Luego, parado en el directorio "root" de este proyecto ejecutar los siguientes c
 
 ## 1. Ganache:
 
+Descargar e instalar Ganache. Luego de instalado, ejecutarlo y seleccionar la opción de "Quickstart" para que Ganache cree 10 wallets con 100 Ethers cada una. Estas wallets son las que se usarán para interactuar con la aplicación.
+
 ![Levantar Ganache](./README_PICS/ganache_readme_1.png)
 
 ## 2. Tomar de Ganache un address e ingresarlo en el constructor del contrato Election.sol, ubicado en /contracts:
