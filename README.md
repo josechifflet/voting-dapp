@@ -25,8 +25,8 @@ Descargar e instalar Ganache. Luego de instalado, ejecutarlo y seleccionar la op
 
 ![Levantar Ganache](./README_PICS/ganache_readme_1.png)
 
-## 2. Tomar de Ganache un address e ingresarlo en el constructor del contrato Election.sol, ubicado en /contracts:
-  adminsRegister[address(** address **)] = true;
+## 2. Tomar de Ganache un address e ingresarlo en el mapping de "votersRegister" dentro del constructor del contrato Election.sol, ubicado en /contracts:
+  votersRegister[address(** address **)] = true;
 
   ![Ingresar address a votantes permitidos](./README_PICS/contract_readme_2.png)
 
@@ -38,7 +38,7 @@ Descargar e instalar Ganache. Luego de instalado, ejecutarlo y seleccionar la op
   - cd web
   - ng serve
 
-## 5. Dirigirse a http://localhost:4200 y en metamask, iniciar sesión en localhost:8545 (se asume que Ganache se levantó en el puerto 8545)
+## 5. Dirigirse a http://localhost:4200 y en metamask, iniciar sesión en localhost:8545 (se asume que Ganache se levantó en el puerto 8545). Si no hay sesión iniciada en Metamask, se desplegará un popup de error.
 
   ![Iniciar sesión en metamask](./README_PICS/readme_3.png)
 
