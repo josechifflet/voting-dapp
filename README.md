@@ -1,4 +1,4 @@
-# Angular Voting DApp
+# Ethereum and Angular Voting DApp
 
 ## Setup
 
