@@ -1,4 +1,4 @@
-# Angular Voting DApp on Truffle Framework.
+# Angular Voting DApp
 
 ## Setup
 
